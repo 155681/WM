@@ -1,3 +1,4 @@
+type = prompt("Jakiego gatunku utworzychcesz sprawdzić?"," Wpisz jeden z wymioenionych: pop, rege, hip-hop, rock")
 const songs = [  
 	{ title: "Senorita", performer: "Shown Mendes", tracklenght: 204 , type: "pop"},
   { title: "Get Up", performer: "Bob Marley", tracklenght: 235 , type: "rege" },
@@ -13,10 +14,11 @@ const compose = (...fns) => (x) => fns.reduceRight((acc, fn) => fn(acc), x)
 
 const getPop = (list) => list.filter((song) => song.type === 'pop');
 const getHip = (list) => list.filter((song) => song.type === 'hip-hop');
+const getRege = (list) => list.filter((song) => song.type === 'rege');
+const getRock = (list) => list.filter((song) => song.type === 'rock');
+
 const getTrackLenght = (list) => list.map(({ tracklenght }) => tracklenght);
 const countTrackLenght = (song) => song.reduce((acc, tracklenght) => acc + tracklenght);
-const pop = compose(countTrackLenght, getTrackLenght, getPop);
-const hip = compose(countTrackLenght, getTrackLenght, getHip);
 
 const shortestReduce = (prev, next) => prev.tracklenght < next.tracklenght ? prev : next
 const shortest = songs.reduce(shortestReduce, songs);
@@ -24,8 +26,27 @@ const shortest = songs.reduce(shortestReduce, songs);
 const longestReduce = (prev, next) => prev.tracklenght > next.tracklenght ? prev : next
 const longest = songs.reduce(longestReduce, songs);
 
-
-console.log('W tej liście utworów musyki z gatunku POP będziemy słychac przez ' + pop(songs)/60 + ' minut.');
-console.log('W tej liście utworów musyki z gatunku HIP-HOP będziemy słychac przez ' + hip(songs)/60 + ' minut.');
+switch(type){
+case 'pop':
+const pop = compose(countTrackLenght, getTrackLenght, getPop);
+var min = pop(songs)/60;
+break;
+case 'hip-hop':
+const hip = compose(countTrackLenght, getTrackLenght, getHip);
+var min = hip(songs)/60;
+break;
+case 'rege':
+const rege = compose(countTrackLenght, getTrackLenght, getRege);
+var min = rege(songs)/60;
+break;
+case 'rock':
+const rock = compose(countTrackLenght, getTrackLenght, getRock);
+var min = rock(songs)/60;
+break;
+default:
+alert ('Nie ma takiego gatunku');
+}
+if(min>0)
+{alert('W tej liście utworów musyki z gatunku ' + type + ' będziemy słychac przez ' + min + ' minut.');}
 console.log('Najkrótszy utwór to ' + shortest.title +', który trwa ' + shortest.tracklenght/60 + ' minut, a śpiewa go ' + shortest.performer);
 console.log('Najdłuższy utwór to ' + longest.title +', który trwa ' + longest.tracklenght/60 + ' minut, a śpiewa go ' + longest.performer);
