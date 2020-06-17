@@ -1,51 +1,31 @@
-const books = [{
-    title: 'Total Recall',
-    pages: 656,
-    genre: 'biography'
-  },
-  {
-    title: 'Stillness Is the Key',
-    pages: 288,
-    genre: 'philosophy'
-  },
-  {
-    title: 'Creativity, Inc.',
-    pages: 368,
-    genre: 'business'
-  },
-  {
-    title: 'Sapiens',
-    pages: 498,
-    genre: 'nonfiction'
-  },
-  {
-    title: 'Do the work',
-    pages: 114,
-    genre: 'nonfiction'
-  },
-  {
-    title: 'MAKE: Bootstrappers Handbook',
-    pages: 194,
-    genre: 'business'
-  },
-  {
-    title: 'Outliers',
-    pages: 309,
-    genre: 'business'
-  },
+const songs = [  
+	{ title: "Senorita", performer: "Shown Mendes", tracklenght: 204 , type: "pop"},
+  { title: "Get Up", performer: "Bob Marley", tracklenght: 235 , type: "rege" },
+  { title: "Trofea", performer: "Dawid Podsiadło", tracklenght: 185 , type: "pop" },
+  { title: "Changes", performer: "2Pac", tracklenght: 302 , type: "hip-hop" },
+  { title: "Diamonds", performer: "Rihanna", tracklenght: 256 , type: "pop" },
+  { title: "Mama Mia", performer: "Lil Wayne", tracklenght: 254 , type: "hip-hop" },
+  { title: "Za krokiem krok", performer: "Cleo", tracklenght: 199 , type: "pop" },
+  { title: "Rock of Bust", performer: "AD/AC", tracklenght: 287 , type: "rock" },
 ];
 
 const compose = (...fns) => (x) => fns.reduceRight((acc, fn) => fn(acc), x)
 
-const getBusiness = (list) => list.filter((book) => book.genre === 'business');
-const getPages = (list) => list.map(({ pages }) => pages);
-const countPages = (book) => book.reduce((acc, pages) => acc + pages);
-const business = compose(countPages, getPages, getBusiness);
+const getPop = (list) => list.filter((song) => song.type === 'pop');
+const getHip = (list) => list.filter((song) => song.type === 'hip-hop');
+const getTrackLenght = (list) => list.map(({ tracklenght }) => tracklenght);
+const countTrackLenght = (song) => song.reduce((acc, tracklenght) => acc + tracklenght);
+const pop = compose(countTrackLenght, getTrackLenght, getPop);
+const hip = compose(countTrackLenght, getTrackLenght, getHip);
 
-const shortestReduce = (prev, next) => prev.pages < next.pages ? prev : next
-const shortest = books.reduce((shortestReduce, books) => {return books.title});
+const shortestReduce = (prev, next) => prev.tracklenght < next.tracklenght ? prev : next
+const shortest = songs.reduce(shortestReduce, songs);
+
+const longestReduce = (prev, next) => prev.tracklenght > next.tracklenght ? prev : next
+const longest = songs.reduce(longestReduce, songs);
 
 
-
-console.log('Łącznie książki z gatunku biznes mają ' + business(books) + ' stron.');
-console.log('Najkrótsza książka to : ' + shortest);
+console.log('W tej liście utworów musyki z gatunku POP będziemy słychac przez ' + pop(songs)/60 + ' minut.');
+console.log('W tej liście utworów musyki z gatunku HIP-HOP będziemy słychac przez ' + hip(songs)/60 + ' minut.');
+console.log('Najkrótszy utwór to ' + shortest.title +', który trwa ' + shortest.tracklenght/60 + ' minut, a śpiewa go ' + shortest.performer);
+console.log('Najdłuższy utwór to ' + longest.title +', który trwa ' + longest.tracklenght/60 + ' minut, a śpiewa go ' + longest.performer);
